@@ -35,7 +35,7 @@ nitrite <- mean(bg_chem$NO2)
 amm     <- mean(bg_chem$NH4)
 phos    <- mean(bg_chem$P)
 ```
-The nitrate mean is '{r} round(nitrate)'.
+The nitrate mean is `{r} round(nitrate)`.
 ```{r}
 ratio <- (nitrate + nitrite + amm) / phos
 ```
