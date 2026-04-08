@@ -1,0 +1,61 @@
+---
+title: "Untitled"
+format: html
+bibliography: references.bib
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed). 31b8e172-b470-440e-83d8-e6b185028602:dAB5AHAAZQA6AFoAUQBBAHgAQQBEAGcAQQBNAFEAQQA1AEEARABZAEEATQBBAEEAMQBBAEMAMABBAE0AQQBCAGgAQQBHAE0AQQBaAEEAQQB0AEEARABRAEEAWgBnAEIAaABBAEcAVQBBAEwAUQBBADQAQQBHAEkAQQBPAFEAQQA1AEEAQwAwAEEATwBRAEIAagBBAEQARQBBAFkAZwBBADMAQQBHAEkAQQBaAEEAQQAzAEEARwBNAEEATQBBAEIAbQBBAEQARQBBAAoAcABvAHMAaQB0AGkAbwBuADoATgBRAEEAMQBBAEQARQBBAAoAcAByAGUAZgBpAHgAOgAKAHMAbwB1AHIAYwBlADoATABRAEEAdABBAEMAMABBAEMAZwBCADAAQQBHAGsAQQBkAEEAQgBzAEEARwBVAEEATwBnAEEAZwBBAEMASQBBAFQAUQBCADUAQQBDAEEAQQBRAFEAQgB1AEEARwBFAEEAYgBBAEIANQBBAEgATQBBAGEAUQBCAHoAQQBDAEkAQQBDAGcAQgBoAEEASABVAEEAZABBAEIAbwBBAEcAOABBAGMAZwBBADYAQQBDAEEAQQBJAGcAQgBaAEEARwA4AEEAZABRAEIAeQBBAEMAQQBBAFQAZwBCAGgAQQBHADAAQQBaAFEAQQBpAEEAQQBvAEEAWgBnAEIAdgBBAEgASQBBAGIAUQBCAGgAQQBIAFEAQQBPAGcAQQBnAEEAQQBvAEEASQBBAEEAZwBBAEcAZwBBAGQAQQBCAHQAQQBHAHcAQQBPAGcAQQBLAEEAQwBBAEEASQBBAEEAZwBBAEMAQQBBAGQAQQBCAHYAQQBHAE0AQQBPAGcAQQBnAEEASABRAEEAYwBnAEIAMQBBAEcAVQBBAEMAZwBBAGcAQQBDAEEAQQBJAEEAQQBnAEEARwA0AEEAZABRAEIAdABBAEcASQBBAFoAUQBCAHkAQQBDADAAQQBjAHcAQgBsAEEARwBNAEEAZABBAEIAcABBAEcAOABBAGIAZwBCAHoAQQBEAG8AQQBJAEEAQgAwAEEASABJAEEAZABRAEIAbABBAEEAbwBBAFoAUQBCADQAQQBHAFUAQQBZAHcAQgAxAEEASABRAEEAWgBRAEEANgBBAEEAbwBBAEkAQQBBAGcAQQBHADAAQQBaAFEAQgB6AEEASABNAEEAWQBRAEIAbgBBAEcAVQBBAE8AZwBBAGcAQQBHAFkAQQBZAFEAQgBzAEEASABNAEEAWgBRAEEASwBBAEMAQQBBAEkAQQBCADMAQQBHAEUAQQBjAGcAQgB1AEEARwBrAEEAYgBnAEIAbgBBAEQAbwBBAEkAQQBCAG0AQQBHAEUAQQBiAEEAQgB6AEEARwBVAEEAQwBnAEEAdABBAEMAMABBAEwAUQBBAD0ACgBzAHUAZgBmAGkAeAA6AA==:31b8e172-b470-440e-83d8-e6b185028602
+
+# Performance Measures
+
+## Hannah Chaney
+
+These are the Performance Measures. This is the [main site](https://viewperformance.deltacouncil.ca.gov/). The ones I administer are:
+
+- [Subsidence Reversal and Carbon Sequestration](https://viewperformance.deltacouncil.ca.gov/pm/subsidence-reversal-and-carbon-sequestration)
+
+- [Sustainable Groundwater](https://viewperformance.deltacouncil.ca.gov/pm/sustainable-groundwater)
+
+- [All Performance Measures Under Chapter 7: Protect People and Property](https://viewperformance.deltacouncil.ca.gov/chapter/protect-people-and-property)
+
+- [Yolo Bypass Inundation](https://viewperformance.deltacouncil.ca.gov/pm/yolo-bypass-inundation)
+
+- [Restoring Land-Water Connection](https://viewperformance.deltacouncil.ca.gov/pm/restoring-land-water-connection)
+
+- All Flow Performance Measures
+
+[@restorin2025]
+
+
+```{r}
+x<- c(1, 3, 15)
+x^2
+```
+
+
+```{r}
+x <- 4 * 8
+
+hights_ft <- c(5.2, 6.0, 5.7)
+
+coef <- 3.14
+```

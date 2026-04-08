@@ -1,0 +1,47 @@
+---
+title: "North Pole Environmental Observatory Bottle Chemistry"
+format: html
+---
+
+```{r load r packages}
+#|warning: false
+#|message: false
+library(here)
+library(readr)
+```
+
+# [North Pole Environmental Observatory Bottle Chemistry](https://arcticdata.io/catalog/view/doi:10.18739/A25T3FZ8X)
+
+This data set includes diverse measurements of seawater chemistry along with supporting conductivity, temperature, and depth (CTD) data from the Arctic Ocean near the North Pole. Measurements were taken from sea ice platforms each April or May from 2000-2014. Investigators used a CTD-O2 system to measure seawater conductivity, temperature, depth, and dissolved oxygen content, and collected Niskin bottle samples for measurements of salinity, oxygen isotopes composition, total alkalinity, and concentrations of phosphate, silicic acid, nitrate, nitrite, ammonium, and barium. More information about the project is available at the project web site: [http://psc.apl.washington.edu/northpole](http://psc.apl.washington.edu/northpole).
+
+## Reading in the Data: BG Chem
+```{r}
+bg_chem <-read_csv(here('data','BGchem2008data.csv'))
+```
+
+## Taking a Look
+```{r}
+#| eval: false
+#| echo: false
+colnames(bg_chem)
+str(bg_chem)
+View(bg_chem)
+```
+
+## Summary Statistics
+```{r}
+nitrate <- mean(bg_chem$NO3)
+nitrite <- mean(bg_chem$NO2)
+amm     <- mean(bg_chem$NH4)
+phos    <- mean(bg_chem$P)
+```
+The nitrate mean is '{r} round(nitrate)'.
+```{r}
+ratio <- (nitrate + nitrite + amm) / phos
+```
+The Redfield ratio for this dataset is approximately `{r} round(ratio)`.
+
+## Plot BG Chem
+```{r}
+plot(bg_chem$P, bg_chem$NO2 + bg_chem$NO3 + bg_chem$NH4)
+```
