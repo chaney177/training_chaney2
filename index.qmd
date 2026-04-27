@@ -7,4 +7,4 @@ This is a great report about...
 
 ## Course Analysis
 
--Data visualization (link coming soon)
+-[Data visualization](notebooks/data-visualization.html)
