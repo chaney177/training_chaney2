@@ -168,3 +168,20 @@ ggplotly(facet_plot, tooltip = c('x', 'y'))
 ```{r}
 datatable(delta_visits)
 ```
+
+### Show an interactive map
+
+```{r}
+restoration_sites<- delta_visits %>%
+    clean_names() %>%
+    distinct(restore_loc= eco_restore_approximate_location, latitude, longitude) %>%
+    drop_na(latitude, longitude)
+restoration_sites
+```
+
+```{r}
+leaflet(restoration_sites) %>% 
+    addTiles() %>%
+    addMarkers(lng= ~longitude,
+    lat=~latitude)
+```
