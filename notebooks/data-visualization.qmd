@@ -1,0 +1,162 @@
+---
+title: "Data Visualization"
+format: html
+---
+
+## Load Packages
+
+```{r}
+### Data wrangling
+library(readr)
+library(here)      ### for robust relative file paths
+library(dplyr)
+library(tidyr)
+library(forcats)   ### tools for working with factors (e.g., reordering)
+library(janitor)   ### clean column names
+
+### Visualization
+library(ggplot2)
+
+### Interactive output
+library(plotly)
+```
+
+## Load the data
+```{r}
+delta_visits_raw<- read_csv("https://tinyurl.com/delta-activities")
+```
+
+## Explore the Data
+
+```{r}
+colnames(delta_visits_raw)
+glimpse(delta_visits_raw)
+```
+
+## Clean Up the data
+
+```{r}
+delta_visits <- delta_visits_raw %>% clean_names()
+delta_visits
+```
+
+
+```{r}
+visits_long <- delta_visits %>%
+  tidyr::pivot_longer(
+    cols = c(sm_boat, med_boat, lrg_boat, bank_angler, scientist, cars),
+    names_to = "visitor_type",
+    values_to = "quantity"
+  ) %>%
+  ### shorten the long name:
+  dplyr::rename(restore_loc = eco_restore_approximate_location) %>%
+  ### drop the notes column:
+  dplyr::select(-notes)
+
+glimpse(visits_long)
+```
+
+```{r}
+daily_visits_loc <- visits_long %>%
+    dplyr::group_by(restore_loc, date, visitor_type) %>% 
+    dplyr::summarize(daily_visits = sum(quantity), .groups = 'drop')
+    
+glimpse(daily_visits_loc)
+
+```
+
+## Make some plots
+
+```{r}
+daily_visits_loc %>% ggplot(aes(x = restore_loc, y = daily_visits)) +
+  geom_col() + 
+  labs(title = 'Plot title')
+```
+
+
+```{r}
+daily_visits_loc %>%
+    filter(daily_visits < 30,
+           visitor_type %in% c("sm_boat", "med_boat", "lrg_boat")) %>%
+    ggplot(aes(x = visitor_type, y = daily_visits)) +
+    geom_violin()
+```
+
+### Setting the coloring
+### Fixed Data
+```{r}
+ggplot(data = daily_visits_loc,
+       aes(x = restore_loc, y = daily_visits)) +
+  geom_col(color = 'red',
+           fill = "steelblue")
+```
+
+### Color assigned by data
+```{r}
+ggplot(data = daily_visits_loc,
+       aes(x = restore_loc, y = daily_visits)) +
+  geom_col(aes(fill = visitor_type),
+           color = 'red')
+```
+
+
+```{r}
+daily_visits_loc %>% ggplot(aes( y= restore_loc, x= daily_visits, fill= visitor_type)) + geom_col() + 
+    labs(x= "Number of Visits", 
+    y= "Restoration Location", 
+    fill = "Visitor Type", 
+    title = "Total Visits to the Restored Areas...",
+    subtitle= "Sum of Visits between July 2017 and March 2018"
+    ) +
+        scale_x_continuous(breaks = seq(0, 120, 20), expand = c(0,0)) + theme (legend.position = "bottom", axis.ticks.x = element_blank()
+        )
+```
+### Theme!
+
+```{r}
+my_theme <- function(size = 14) {
+    theme_minimal(base_size = size) +
+    theme(legend.position = "bottom", 
+          axis.ticks.y = element_line(color = "red", size = 0.5))
+}
+```
+
+### adding daily visit total
+
+```{r}
+daily_visits_totals <- daily_visits_loc %>%
+  group_by(restore_loc) %>%
+  mutate(total = sum(daily_visits)) %>%
+  ungroup() %>%
+  mutate(restore_loc = fct_reorder(restore_loc, desc(total)))
+
+unique(daily_visits_totals$restore_loc)
+```
+
+```{r}
+facet_plot <- ggplot(data = daily_visits_totals,
+       aes(x = visitor_type, y = daily_visits,
+           fill = visitor_type)) +
+    geom_col() +
+    facet_wrap(~restore_loc,
+               scales = "free_y",
+               ncol   = 5,
+               nrow   = 2) +
+    scale_fill_viridis_d() +
+    labs(x        = "Type of visitor",
+         y        = "Number of Visits",
+         title    = "Total Number of Visits to Delta Restoration Areas",
+         subtitle = "Sum of all visits during study period") +
+    theme_bw() +
+    theme(legend.position = "bottom",
+          axis.ticks.x    = element_blank(),
+          axis.text.x     = element_blank())
+
+facet_plot
+```
+
+### GGPLOTLY
+
+```{r}
+ggplotly(facet_plot, tooltip = c('x', 'y'))
+```
