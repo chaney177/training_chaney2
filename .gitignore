@@ -47,3 +47,19 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+scripts/North Pole Data Test_files/libs/bootstrap/bootstrap-icons.woff
+scripts/North Pole Data Test_files/libs/bootstrap/bootstrap.min.js
+scripts/North Pole Data Test_files/libs/clipboard/clipboard.min.js
+scripts/North Pole Data Test_files/libs/quarto-html/anchor.min.js
+scripts/North Pole Data Test_files/libs/quarto-html/popper.min.js
+scripts/North Pole Data Test_files/libs/quarto-html/quarto.js
+scripts/North Pole Data Test_files/libs/quarto-html/tippy.umd.min.js
+scripts/North Pole Data Test_files/libs/quarto-html/tabsets/tabsets.js
+scripts/North-Pole-Data-Test_files/figure-html/unnamed-chunk-5-1.png
+scripts/Practice code_files/libs/bootstrap/bootstrap.min.js
+scripts/Practice code_files/libs/clipboard/clipboard.min.js
+scripts/Practice code_files/libs/quarto-html/anchor.min.js
+scripts/Practice code_files/libs/quarto-html/popper.min.js
+scripts/Practice code_files/libs/quarto-html/quarto.js
+scripts/Practice code_files/libs/quarto-html/tippy.umd.min.js
+scripts/Practice code_files/libs/quarto-html/tabsets/tabsets.js
