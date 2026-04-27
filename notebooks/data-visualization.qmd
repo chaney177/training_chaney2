@@ -19,6 +19,9 @@ library(ggplot2)
 
 ### Interactive output
 library(plotly)
+
+library(DT)
+library(leaflet)
 ```
 
 ## Load the data
@@ -159,4 +162,9 @@ facet_plot
 
 ```{r}
 ggplotly(facet_plot, tooltip = c('x', 'y'))
+```
+
+### Show an interactive table
+```{r}
+datatable(delta_visits)
 ```
