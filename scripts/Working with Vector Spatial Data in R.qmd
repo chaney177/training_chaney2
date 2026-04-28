@@ -1,0 +1,182 @@
+---
+title: "Working with Vector Spatial Data in R"
+format: html
+author: Hannah Chaney
+---
+## Setup
+### Attach Packages
+```{r}
+### Data wrangling packages:
+library(readr)
+library(dplyr)
+library(tidyr)
+library(here)
+
+### Simple Features vector spatial data:
+library(sf)
+
+### Data visualization packages:
+library(ggplot2)
+library(leaflet)
+library(scales)
+library(ggspatial)
+```
+
+### Downloading Data
+```{r}
+out_dir <- here::here('data/ak_regions')
+
+if(!dir.exists(out_dir)) {
+    knb_url <- "https://dev.nceas.ucsb.edu/knb/d1/mn/v2/object/urn%3Auuid%3Aaceaecb2-1ce0-4d41-a839-d3607d32bb58"
+
+    download.file(url = knb_url, 
+                  destfile = 'shapefile_demo_data.zip', 
+                  mode = 'wb')
+
+    unzip('shapefile_demo_data.zip', exdir = out_dir)
+
+    file.remove('shapefile_demo_data.zip')
+}
+```
+
+```{r}
+ak_rgns_sf <- read_sf(here("data/ak_regions/ak_regions_simp.shp"))
+```
+
+
+## Data Exploration
+
+```{r}
+st_crs(ak_rgns_sf)
+```
+
+```{r}
+ak_rgns_3338_sf <- ak_rgns_sf %>%
+    st_transform(crs = 3338)
+
+# st_crs(ak_rgns_3338_sf) ### run in console to check
+```
+
+```{r}
+plot(ak_rgns_3338_sf)
+```
+
+```{r}
+head(ak_rgns_3338_sf)
+```
+
+Select keeps the geometry and filter works as expected to focus in on certain regions.
+
+```{r}
+### filter() works exactly as expected!
+ak_rgns_3338_sf %>%
+    filter(region %in% c("Arctic", "Kodiak"))
+```
+
+## Analysis
+
+```{r}
+out_file <- here::here('data/alaska_population.csv')
+
+if(!file.exists(out_file)) {
+    pop_data_url <- "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3A7fc6f6db-c5ea-426a-a743-1f2edafb43b8"
+
+    download.file(url = pop_data_url, 
+                  destfile = out_file, 
+                  mode = 'w')
+}
+```
+
+### Read in population data
+```{r}
+pop_df <- read_csv(here("data/alaska_population.csv")) %>%
+    filter(Year == 2015) %>%
+    select(city, lat, lng, population = total) %>%
+    drop_na()
+```
+
+```{r}
+pop_4326_sf <- st_as_sf(pop_df,
+                        coords = c('lng', 'lat'),
+                        crs = 4326,
+                        remove = FALSE)
+```
+
+```{r}
+pop_3338_sf <- st_transform(pop_4326_sf, 
+                            crs = 3338)
+
+pop_joined_sf <- st_join(pop_3338_sf, 
+                         ak_rgns_3338_sf, 
+                         join = st_within)
+```
+
+```{r}
+head(pop_joined_sf)
+```
+
+### Calculating Population by Region
+
+```{r}
+pop_rgn_df <- pop_joined_sf %>%
+    st_drop_geometry() %>%
+    group_by(region) %>%
+    summarize(total_pop = sum(population))
+```
+
+```{r}
+pop_rgn_3338_sf <- left_join(ak_rgns_3338_sf, 
+                             pop_rgn_df, 
+                             by = "region")
+
+### plot to check
+plot(pop_rgn_3338_sf["total_pop"])
+```
+
+#### Dissolving Geometries by regions and doing management area instead
+```{r}
+pop_mgmt_3338_sf <- pop_rgn_3338_sf %>%
+    group_by(mgmt_area) %>%
+    summarize(total_pop = sum(total_pop))
+
+plot(pop_mgmt_3338_sf["total_pop"])
+```
+
+### save it!
+```{r}
+write_sf(pop_rgn_3338_sf, here("data/ak_regions_population.gpkg"))
+```
+
+## Visualization
+
+```{r}
+ggplot(pop_rgn_3338_sf) +
+    geom_sf(aes(fill = total_pop)) +
+    labs(fill = "Total Population") +
+    scale_fill_continuous(low = "khaki", high =  "firebrick",
+                          labels = comma, name = "Population") +
+    theme_bw()
+```
+
+```{r}
+rivers_3338_sf <- read_sf(here("data/ak_regions/ak_rivers_simp.shp"))
+```
+
+```{r}
+ggplot() +
+    geom_sf(data = pop_rgn_3338_sf, 
+            mapping = aes(fill = total_pop)) +
+    geom_sf(data = rivers_3338_sf,
+            aes(linewidth = StrOrder),
+            color = 'blue', alpha = .5) +
+    scale_linewidth(range = c(0.05, 0.5),
+                    guide = "none") +
+    geom_sf(data = pop_3338_sf, size = 0.5, color = 'grey20') +
+    labs(title = "Total Population by Alaska Region",
+         fill = "Total Population") +
+    scale_fill_continuous(low = "khaki",
+                          high =  "firebrick",
+                          labels = comma) +
+    theme_bw() 
+```
+

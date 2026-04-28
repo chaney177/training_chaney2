@@ -8,3 +8,4 @@ This is a great report about...
 ## Course Analysis
 
 -[Data visualization](notebooks/data-visualization.html)
+
