@@ -63,3 +63,6 @@ scripts/Practice code_files/libs/quarto-html/popper.min.js
 scripts/Practice code_files/libs/quarto-html/quarto.js
 scripts/Practice code_files/libs/quarto-html/tippy.umd.min.js
 scripts/Practice code_files/libs/quarto-html/tabsets/tabsets.js
+
+#ignore Alaska spatial files
+data/ak_regions/
